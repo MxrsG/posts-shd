@@ -1,0 +1,60 @@
+<main class="container py-4">
+  <div class="row g-4 align-items-start">
+
+    <section class="col-12 col-lg-8">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h3 mb-0">Publicaciones</h1>
+      </div>
+
+      @for (post of posts(); track post.id) {
+      <article class="card shadow-sm mb-3">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div><strong>Usuario {{ post.userId }}</strong>
+              <div class="text-secondary small">Publicación #{{ post.id }}</div>
+            </div>
+          </div>
+
+          <h2 class="h5 card-title">{{ post.title }}</h2>
+
+          <p class="card-text text-break">{{ post.body }}</p>
+
+          <div class="d-flex gap-2 border-top pt-3">
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="editarPost(post)">Editar</button>
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="borrarPost(post.id)">Eliminar</button>
+          </div>
+        </div>
+      </article>
+      } @empty {
+      <div class="alert alert-info">No hay publicaciones por mostrar.</div>
+      }
+    </section>
+
+    <aside class="col-12 col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="h5 mb-3">{{ idEdicion !== null ? 'Editar publicación' : 'Nueva publicación' }}</h2>
+          <form (ngSubmit)="guardarPost()">
+            <div class="mb-3">
+              <label for="post-title" class="form-label">Título</label>
+              <input id="post-title" type="text" name="title" class="form-control" [(ngModel)]="formulario.title"
+                placeholder="Título del post" required>
+            </div>
+            <div class="mb-3">
+              <label for="post-body" class="form-label">Contenido</label>
+              <textarea id="post-body" name="description" class="form-control" [(ngModel)]="formulario.body"
+                placeholder="¿Qué quieres contar?" rows="6" required></textarea>
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">{{ idEdicion !== null ? 'Guardar cambios' : 'Publicar post'
+                }}</button>
+              @if (idEdicion !== null) {
+              <button type="button" class="btn btn-outline-secondary" (click)="cancelarEdicion()">Cancelar</button>
+              }
+            </div>
+          </form>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
